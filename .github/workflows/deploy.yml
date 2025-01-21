@@ -41,10 +41,15 @@ jobs:
           username: ${{ secrets.PROD_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Pull the Docker image from Docker Hub
-            docker pull ${{ secrets.DOCKER_USERNAME }}/node-docker-app:latest
-            # Stop any running container (if any)
-            docker stop node-docker-app || true
-            docker rm node-docker-app || true
-            # Run the new container
-            docker run -d --name node-docker-app -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/node-docker-app:latest
+            echo "Pulling the latest Docker image..."
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/node-docker-app:latest
+
+            echo "Stopping and removing any existing container..."
+            sudo docker stop node-docker-app || true
+            sudo docker rm node-docker-app || true
+
+            echo "Running the new container..."
+            sudo docker run -d --name node-docker-app -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/node-docker-app:latest
+
+            echo "Deployment complete. Verifying the container is running..."
+            sudo docker ps | grep node-docker-app || echo "Container failed to start!"
