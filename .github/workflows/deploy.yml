@@ -37,7 +37,7 @@ jobs:
       - name: SSH to the server and deploy Docker container
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.PROD_SERVER_HOST }}
+          host: "65.108.37.107"
           username: ${{ secrets.PROD_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
